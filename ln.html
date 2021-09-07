@@ -1,0 +1,1151 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+  <head>
+    <meta content=
+    "HTML Tidy for Windows (vers 1st February 2003), see www.w3.org"
+          name="generator">
+    <meta http-equiv="Content-Type" content=
+    "text/html; charset=us-ascii">
+    <title>
+      ln - command line hardlinks
+    </title>
+  </head>
+  <body bgcolor="#FFFFFF">
+    &nbsp;
+    <table cellspacing="10" cellpadding="0" width="97%"
+           border="0">
+      <tr>
+        <td colspan="2">
+          <img src="ln.png" alt="ln - command line hardlinks"
+          height="50" width="759">
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" height="22">
+          <div align="right">
+            <i><font face="arial"><font size="-2">Last Updated
+            March 9th 2009, Version 2.2.0.6</font></font></i>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" bgcolor="#F2F2F2">
+          <img src="../../images/spacer.gif" width="1" height="5">
+        </td>
+      </tr>
+      <tr>
+        <td align="right" valign="top" width="130">
+          <b><font face="arial"><font color=
+                "#25049F"><font size="-1">Introduction</font></font></font></b>
+        </td>
+        <td valign="bottom">
+          <font face="arial"><font size="-1">The NTFS filesystem of
+          NT4/W2K/WXP supports hardlinks functionality. This tool
+          creates hardlinks on NTFS volumes in a convenient way
+          from the command prompt.</font></font><br>
+          <br>
+        </td>
+      </tr>
+      <tr>
+        <td align="right" valign="top">
+          <b><font face="arial"><font color=
+                "#25049F"><font size="-1">Installation</font></font></font></b>
+        </td>
+        <td valign="bottom">
+          <font face="arial"><font size="-1">copy ln.exe to some
+          directory referenced by your PATH environment variable.
+          %systemroot% is a good place.</font></font>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <br>
+        </td>
+      </tr>
+      <tr>
+        <td align="right" valign="top">
+          <b><font face="arial"><font color=
+                "#25049F"><font size="-1">Using
+                ln</font></font></font></b>
+        </td>
+        <td valign="bottom">
+          <font face="arial"><font size="-1">ln.exe is a typical
+          command line utility, which can be found similiar within
+          the resource kit. Its' highlights are as
+          follows:</font></font>
+        </td>
+      </tr>
+      <tr>
+        <td align="right" valign="top">
+          <b><font face="arial"><font color=
+                "#25049F"><font size="-1">&nbsp;</font></font></font></b>
+        </td>
+        <td valign="bottom">
+          <table cellspacing="0" cellpadding="0" width="100%"
+          border="0">
+            <tr>
+              <td align="left" width="120" valign="top">
+                <font face="arial"><font size="-1">UNC Name
+                suport</font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">A local path can
+                be a UNC name, which maybe reached from outside the
+                computer via share. Sometimes it is neccessary to
+                use UNC names to refer to local pathes.<br>
+                 ln resolves local UNC names to local path names
+                and does its job on those resolved path names.
+                e.g.:<br>
+                <br>
+                 <font face="courier"><font size="-1"><b>ln
+                \\local_computer\ls\sourcefile.txt
+                x:\dir_on_local_computer\destination.txt<br>
+                <br></b></font></font> In the above example there
+                is a share called <i>ls</i> on your
+                <i>local_computer</i> which conains a file
+                <i>sourcefile.txt</i>. ln resolves the UNC name to
+                a local path if possible, and creates a link
+                between the resolved location and
+                <i>destination.txt</i> in
+                <i>x:\dir_on_local_computer</i>.</font></font>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" width="120" valign="top">
+                <font face="arial"><font size="-1">Recursive
+                support</font></font>
+              </td>
+              <td align="left">
+                <font face="arial" size="-1">Hardlinking one
+                file to another file is something ln.exe from
+                resource kit can also do, but this ln.exe can do
+                more.<p>
+                ln.exe can recursivley hardlink all files found
+                below a given directory location to a to be created
+                directory structure under a different location.<p>
+                In other words this means, the given directory
+                structure is rebuilt under a different location,
+                and all files from the given directory structure
+                are hardlinked to the newly generated structure.
+                Something like a xcopy but the files are hardlinked
+                and not copied:<p>
+
+				<p><img src="hardlinkcloneshowto.png" width="520" height="380" border="0"
+				   alt="Hardlink Clones how to">
+				</p>
+
+                 e.g.:<br>
+                <br>
+                 <b>ln -r x:\dir\dir2 x:\dir\newdir<br><br></b>
+                In the above example the
+                directories below <i>x:\dir\dir2</i> are rebuilt
+                below <i>x:\dir\newdir</i>, and all files from
+                <i>x:\dir\dir2</i> are hardlinked to their
+                corresponding locations under <i>x:\dir\newdir</i>.
+
+
+				<p>The Recursive Support or Hardlink Clone functionality is also available via
+				   <a href="http://schinagl.priv.at/nt/hardlinkshellext/linkshellextension.html#hardlinkclones">Link Shell Extension </a>
+				</p>
+                </font>
+
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="120" valign="top">
+                <font face="arial" size="-1">
+                <a name="smartcopy">Copy option</a></font>
+
+              </td>
+              <td align="left">
+                <font face="arial" size="-1">Once hardlinks
+                are used on a disk, copying a whole directory structure with files,
+                some of them hardlinked together, to another
+                hardisk or path and preserving the inner hardlink structure of this
+                directory structure becomes difficult, because currently there is no copy
+                program, which can do this.<p>
+
+				<font face="arial" size="-1">
+				The --copy basically creates a copy of the directory structure
+				from the source location to the destination, but it
+				preserves the inner
+				hardlink structure of the source, and recreates this
+				inner hardlink structure in the destination location:
+
+				<p><img src="smartcopyhowto.png" width="520" height="380"
+				   border="0" alt="Drop Smart Copy">
+				</p>
+
+				<p>By closely looking at the above picture some can find three
+				  different types of files:
+				</p>
+
+				<br>
+				  <table cellspacing="0" cellpadding="0" width="100%" border="0">
+
+
+				  <tr>
+					<td align="left" width="110" valign="top">
+						  <font face="arial" size="-1"><b>Normal Files</b></font>
+					</td>
+
+					<td align="left">
+					  <font face="arial" size="-1">The file B is a normal file. It gets copied as
+						any other copy tool would do.<p>
+
+
+					  </font>
+					</td>
+				  </tr>
+
+				  <tr>
+					<td align="left" width="110" valign="top">
+						  <font face="arial" size="-1"><b>Saturated Hardlinks</b></font>
+					</td>
+
+					<td align="left">
+					  <font face="arial" size="-1">The files E and F are hardlinked together.
+						In LSE naming universe they are called <i>Saturated Hardlinks</i>, because the reference
+						count, which is here 2, matches the number of occurrences below 'Folder 1', which is here 2.
+						<p>
+						In General: A hardlink is called <i>Saturated</i> with respect to a folder <i>F</i>, if the
+						number of occurrences below the folder <i>F</i> matches the reference count.
+						<p>
+						Saturated Hardlinks can be copied completely via Smart Copy.
+						<p>
+
+					  </font>
+					</td>
+				  </tr>
+
+				  <tr>
+					<td align="left" width="110" valign="top">
+						  <font face="arial" size="-1"><b>Unsaturated Hardlinks</b></font>
+					</td>
+
+					<td align="left">
+					  <font face="arial" size="-1">The File A, C, D are hardlinked together.
+						In LSE naming universe they are called <i>Unsaturated Hardlinks</i>, because the reference
+						count, which is here 3, does not match the number of occurrences below 'Folder 1', which is here 2.
+						Only C and D are below Folder one.
+						<p>
+
+						In General: A hardlink is called <i>Unsaturated</i> with respect to a folder <i>F</i>, if the
+						number of occurrences below the folder <i>F</i> is smaller than the reference count.
+						<p>
+						Unsaturated Hardlinks can only be partially copied by Smart Copy. In the above example C and
+						D are hardlinked together in the destination location, but the hardlink to A is broken. This means
+						that the reference count of C and D is 2 under the destination.
+						<p>
+
+
+					  </font>
+					</td>
+				  </tr>
+				</table>
+
+
+				<p>
+				With junctions it behaves as follows:
+
+				<p><img src="junctionshowto.png" width="520" height="380" border="0"
+					 alt="Behaviour for inner junctions">
+				 </p>
+
+
+				<p>By closely looking at the above picture some can find three
+				  different types of folders/junctions:
+				</p>
+
+
+				  <table cellspacing="0" cellpadding="0" width="100%" border="0">
+
+
+				  <tr>
+					<td align="left" width="110" valign="top">
+						  <font face="arial" size="-1"><b>Normal Folders</b></font>
+					</td>
+
+					<td align="left">
+					  <font face="arial" size="-1">The folder 'Folder 3' is a normal folder.
+					  It gets copied with its content as any other copy tool would do.<p>
+					  </font>
+					</td>
+				  </tr>
+
+				  <tr>
+					<td align="left" width="110" valign="top">
+						  <font face="arial" size="-1"><b>Inner Junctions</b></font>
+					</td>
+
+					<td align="left">
+					  <font face="arial" size="-1">The folder 'Inner Junction' is targeted at 'Inner Junction Target'.
+						In LSE naming universe this kind of folder is called <i>Inner Junction</i>, because its target
+						points to a folder, which is below the common anchor 'Folder 1'.<p>
+						<i>Inner Junctions</i> are restored properly via Smart Copy in the destination location.
+						<p>
+
+					  </font>
+					</td>
+				  </tr>
+
+				  <tr>
+					<td align="left" width="110" valign="top">
+						  <font face="arial" size="-1"><b>Outer Junctions</b></font>
+					</td>
+
+					<td align="left">
+					  <font face="arial" size="-1">The folder 'Outer Junction' is targeted at the folder 'Outer Junction Target'.
+						In LSE naming universe this kind of folder is called <i>Outer Junction</i>, because its target
+						points to a folder, which is in paralell and thus outside the anchor 'Folder 1'.
+						<p>
+						<i>Outer Junctions</i> are broken by Smart Copy and the thus the content does not get copied.
+						<p>
+
+					  </font>
+					</td>
+				  </tr>
+				</table>
+
+                 e.g.:<br>
+                <br>
+                <font face="courier" size="-1">
+                <b>ln -c x:\dir\dir2 y:\dir\newdir<br><br></b>
+                </font>
+                In the above example the directories and files below <i>x:\dir\dir2</i> are copied
+                to <i>y:\dir\newdir</i>, and all hardlinks within
+                <i>x:\dir\dir2</i> are copied to their
+                new locations under <i>y:\dir\newdir</i>.<br><br>
+
+                <b>If you use ln.exe as a backup tool with the --copy option, please make
+                sure you test that everything is copied. I tested ln --copy many times, and had
+                no problems, but when it comes to backing up data, some has to be careful.</b>
+
+				<p>The Copy or Smart Copy functionality is also available via
+				   <a href="http://schinagl.priv.at/nt/hardlinkshellext/linkshellextension.html#smartcopy">Link Shell Extension </a>
+				</p>
+
+                </font>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" valign="top">
+                <font face="arial"><font size="-1">Normal
+                linking</font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">Just for
+                completeness: ln.exe can do the normal ln stuff
+                too.<br>
+                <br>
+                 <font face="courier"><font size="-1"><b>ln sourcefile.txt destination.txt<br>
+                <br></b></font></font>
+                In the above example <i>sourcefile.txt</i> gets linked to
+                <i>destination.txt</i><br></font></font>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="top">
+                <font face="arial"><font size="-1">Enum hardlinks
+                </font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">Sometimes it is convenient
+                to find out which files are linked together, because hardlinked files
+                might be spread around a NTFS volume. This is somehow the inverse
+                hardlink functionality and it can be invoked as follows<br>
+                <br>
+                 <font face="courier"><font size="-1"><b>ln -e
+                path<br>
+                <br></b></font></font> In the above example files below
+                <i>path</i> are searched, and the files which are hardlinked
+                are printed out.<br><br>
+                The -e option first prints so called <i>saturated</i> and afterwards
+                <i>unsaturated</i> hardlinks. For <i>saturated</i> hardlinks the number of files
+                found below <i>path</i> matches the hardlink reference count of these files, but
+                <i>unsaturated</i> hardlinks have a reference count greater than the number
+                found below <i>path</i>.
+                <br></font></font>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="top">
+                <font face="arial" size="-1"><a name="listsibblings">List Hardlink sibblings</a>
+                </font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">With Vista finding out the sibblings
+                of a hardlink is very simple and needs no timeconsuming operations
+				<br>
+                <br>
+                 <font face="courier" size="-1"><b>ln -l filename<br>
+                <br></b></font>In the above example the hardlink sibblings for <i>filename</i>
+                are printed out.<p>
+
+                With XP, W2K or W2K3 finding the hardlink siblings now also works, but it
+                takes more time, because in the worst case the whole logical volume
+                must be searched.
+
+                <br></font></font>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="top">
+                <font face="arial" size="-1">
+				<a name="symbolic">Symbolic Links</a></font>
+
+              </td>
+              <td align="left">
+                <font face="arial" size="-1">
+                When used under Vista ln.exe can create symbolic links<br><br>
+                <font face="courier" size="-1">
+                  <b>ln -s sourcefile.txt destination.txt<br><br></b>
+                </font>
+                In the above example <i>sourcefile.txt</i> gets symbolycally linked to
+                <i>destination.txt</i>.<p>
+                <b>Please make sure that symbolic links can just be successfuly created from
+                an administrative command prompt. ln.exe will fail on symbolic links from normal
+                command prompts!</b>
+
+                <br></font>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="top">
+                <font face="arial" size="-1">
+				<a name="symbolic">Junctions</a></font>
+
+              </td>
+              <td align="left">
+                <font face="arial" size="-1">
+                ln.exe can also create junctions, and print the target of junctions<br><br>
+                <font face="courier" size="-1">
+                  <b>ln -j JunctionName TargetDirectory<br><br></b>
+                </font>
+                In the above example a junction<i>JunctionName</i> is created, which point to
+                <i>TargetDirectory</i><br><br>
+                <font face="courier" size="-1">
+                  <b>ln -j JunctionName<br><br></b>
+                </font>
+                In the above example the junction<i>JunctionName</i> is searched for its Target and the target
+                is printed out.<br><br>
+                <font face="courier" size="-1">
+                  <b>rd JunctionName<br><br></b>
+                </font>
+                In the above example the junction<i>JunctionName</i> removed. This is accomplished with an simple
+                built in command prompt command.<br><br>
+                </font>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="top">
+                <font face="arial" size="-1">Long path support</font>
+              </td>
+              <td align="left">
+                <font face="arial" size="-1">
+                ln.exe can handle path longer than 256 characters. This is usefully especially in the
+                --copy and --recursive mode<br><br>
+                </font>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <br>
+        </td>
+      </tr>
+
+      <tr>
+        <td align="right" valign="top">
+          <b><font face="arial"><font color=
+                "#25049F"><font size="-1">Return Values
+                </font></font></font></b>
+        </td>
+        <td valign="bottom">
+          <font face="arial"><font size="-1">As a typical command line utility
+          ln.exe exits with return values, so that it can be conveniently used from
+          .bat files:</font></font>
+        </td>
+      </tr>
+      <tr>
+        <td align="right" valign="top">
+          <b><font face="arial"><font color=
+                "#25049F"><font size="-1">&nbsp;</font></font></font></b>
+        </td>
+        <td valign="bottom">
+          <table cellspacing="0" cellpadding="0" width="100%"
+          border="0">
+
+            <tr>
+              <td align="left" width="40" valign="top">
+                <font face="arial"><font size="-1">0
+                </font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">Success. Everything is fine.
+			    </font></font>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="40" valign="top">
+                <font face="arial"><font size="-1">-1
+                </font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">The source directory
+                given via command line parameters, does not exist.<br>
+                This happens in recursive mode if the first command line
+                argument is not there
+			    </font></font>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="40" valign="top">
+                <font face="arial"><font size="-1">-2
+                </font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">The first command line argument
+                in recursive mode specifies a directory, and it is not a directory,
+                but some other kind of file.
+			    </font></font>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="40" valign="top">
+                <font face="arial"><font size="-1">-3
+                </font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">The second command line argument
+                specifies a file, or in recursive mode a directory, which already exists.
+			    </font></font>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="40" valign="top">
+                <font face="arial"><font size="-1">-4
+                </font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">The destination directory
+                could not be created in recursive mode.
+			    </font></font>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="40" valign="top">
+                <font face="arial"><font size="-1">-5
+                </font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">The source file
+                aka first command line parameter does not exist
+                in normal mode.
+			    </font></font>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="40" valign="top">
+                <font face="arial"><font size="-1">-6
+                </font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">The filesystem
+                is not NTFS and does not support the creation of
+                hardlinks.</font></font>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="40" valign="top">
+                <font face="arial"><font size="-1">-7
+                </font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">For some unknown reason the
+                creation of a hardlink failed.
+			    </font></font>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="40" valign="top">
+                <font face="arial"><font size="-1">-8
+                </font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">Less arguments
+                were given via command line.
+			    </font></font>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="40" valign="top">
+                <font face="arial"><font size="-1">-9
+                </font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">Ln was not able to enumerate the
+                files in a directory. This might happen in recursive or in
+                hardlink eunumeration mode if the file permissions for a directory
+                are insufficient.
+			    </font></font>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <br>
+              </td>
+            </tr>
+
+
+          </table>
+        </td>
+      </tr>
+
+
+
+      <tr>
+        <td align="right" valign="top" width="130">
+          <b><font face="arial"><font color=
+                "#25049F"><font size="-1">Backgrounders</font></font></font></b>
+        </td>
+        <td valign="bottom">
+          <font face="arial"><font size="-1">Hardlinks are a
+          feature which are common to every Unix system, but are
+          not directly available with NT4/W2K/WXP. It is a feature,
+          which must be basically supported by the file system of
+          the operating system.</font></font>
+          <p>
+            <font face="arial"><font size="-1">So what are
+            hardlinks in detail. It is common knowledge, that a
+            file has a name and data associated to it. By opening
+            the explorer, the NTFS filesystem of NT4/W2K/WXP can be
+            browsed comfortably. There is a 1:1 relationship
+            between the <i>filename</i> and the <i>filedata</i>,
+            but this assumption does not hold for every
+            filesystem.</font></font>
+          </p>
+          <p>
+            <font face="arial"><font size="-1">Some filesystems,
+            such as UFS, XFS, or NTFS have a N:1 relationship
+            between <i>filename</i> and the <i>filedata</i>. So
+            this means there is more than one directory entry for a
+            file.</font></font>
+          </p>
+          <p>
+            <font face="arial"><font size="-1">But how does one
+            create those multiple entries? There is a command under
+            Unix called <i>ln</i>, which creates many file entries
+            for a file, so that there are many filenames or also
+            called hardlinks for one filedata.</font></font>
+          </p>
+          <p>
+            <font face="arial"><font size="-1">For each hardlink
+            created, the filesystem increments a reference count
+            stored with the <i>filedata</i>, so that the
+            <i>filedata</i> stores how many filenames point to it.
+            If a filename pointing to a hardlinked filedata gets
+            deleted, the reference count stored with the filedata
+            gets decremented by one. The filedata gets deleted when
+            the reference count of the filedata decreases to
+            zero.</font></font>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <br>
+        </td>
+      </tr>
+      <tr>
+        <td align="right" valign="top">
+          <b><font face="arial"><font color=
+                "#25049F"><font size="-1">Limitations</font></font></font></b>
+        </td>
+        <td valign="bottom">
+          <font face="arial"><font size="-1">Ln.exe can only be
+          used with NT4/W2K/WXP<br>
+           HardLinks can only be created on NTFS volumes, under
+          NT4/W2K/WXP.<br>
+           HardLinks can only be created within one NTFS volumes, and
+          can not span accross NTFS volumes.<br>
+          volumes.<br></font></font>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <br>
+        </td>
+      </tr>
+      <tr>
+        <td align="right" valign="top">
+          <b><font face="arial" color="#25049F" size="-1">History</font></b>
+        </td>
+        <td valign="bottom">
+          <table cellspacing="0" cellpadding="0" width="100%"
+          border="0">
+
+            <tr>
+              <td align="left" width="120" valign="top">
+                <font face="arial" size="-1" >March 9th 2009</font>
+              </td>
+              <td align="left">
+                <font face="arial" size="-1" >Version 2.2.0.6
+                Enumerate hardlink siblings for Vista & Wxp, Symbolic link support vista<br>
+                Under W2K it turned out, that CreateHardlink() from kernel32.dll with long pathnames (e.g. \\?\) was
+                broken.
+
+                <br>
+                <br></font>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="120" valign="top">
+                <font face="arial" size="-1">September 12th 2008</font>
+              </td>
+              <td align="left">
+                <font face="arial" size="-1">Version 1.997
+                Introduced the <a href="#smartcopy">--copy</a> option<br>
+                Enabled the <a href="#symbolic">--symbolic</a> option for Vista<br>
+                Introduced the <a href="#listsibblings">--list</a> option under Vista<br>
+                Added long (32k) path support<br>
+                <br></font>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="120" valign="top">
+                <font face="arial"><font size="-1">February 17th
+                2006</font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">Version 1.810
+                Various small fixes related to commandline parsing.
+                <br>
+                <br></font></font>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="120" valign="top">
+                <font face="arial"><font size="-1">February 18th
+                2005</font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">Version 1.803
+                Fixed NT4 compatibility issues.
+                <br>
+                <br></font></font>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="120" valign="top">
+                <font face="arial"><font size="-1">February 7th
+                2005</font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">Version 1.800
+                Fixed a few minor internal flaw related to hardlink enumeration.
+                Improved html documenation and added description for return values.
+                <br>
+                <br></font></font>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="120" valign="top">
+                <font face="arial"><font size="-1">November 26th
+                2004</font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">Version 1.711
+                decides between saturated and unsaturated hardlinks when
+                used with the -e option.<br>
+                <br></font></font>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="120" valign="top">
+                <font face="arial"><font size="-1">November 18th
+                2004</font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">Version 1.600
+                supports the enumerate functionality via -e switch<br>
+                <br></font></font>
+              </td>
+            </tr>
+
+            <tr>
+              <td align="left" width="150" valign="top">
+                <font face="arial"><font size="-1">June 24th
+                2004</font></font>
+              </td>
+              <td align="left">
+                <font face="arial"><font size="-1">Version 1.502
+                released<br>
+                <br></font></font>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+
+
+    <tr>
+      <td align="right"
+          valign="top"><b><font face="arial"><font color=
+          "#25049F"><font size=
+          "-1">Status</font></font></font></b></td>
+
+      <td valign="bottom"><font face="arial"><font size="-1">The 2.2.0 version
+      is stable enough to satisfy most needs.<br>
+      </font></font></td>
+    </tr>
+
+    <tr>
+      <td colspan="2"><br></td>
+    </tr>
+
+
+      <tr>
+        <td align="right" valign="top">
+          <b><font face="arial"><font color=
+                "#25049F"><font size="-1">Acknowledgements</font></font></font></b>
+        </td>
+        <td valign="bottom">
+          <font face="arial"><font size="-1">I wish to thank those
+          who have contributed significantly to the development of
+          ln. Those include:.</font></font>
+          <p>
+            <font face="arial"><font size="-1"><a href=
+            "mailto:felix@mvps.org">Felix Kasza</a> for the
+               <a href="http://www.mvps.org">hardlink
+               basics.</a><br></font></font>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <br>
+        </td>
+      </tr>
+      <tr>
+        <td align="right" valign="top">
+          <b><font face="arial"><font color=
+                "#25049F"><font size="-1">Open
+                Issues</font></font></font></b>
+        </td>
+        <td valign="bottom">
+          <font face="arial"><font size="-1">Maybe bugs?<br>
+           Feature requests?<br></font></font>
+        </td>
+      </tr>
+      <tr>
+        <td align="right" valign="top">
+          <b><font face="arial"><font color=
+                "#25049F"><font size="-1">Links
+                </font></font></font></b>
+        </td>
+        <td valign="bottom">
+          <font face="arial"><font size="-1">Jos Branders
+           has a tool called <a href="http://www.rekenwonder.com/linkmagic.htm">Link Magic 1.0</a>,
+           which deals in depth with NTFS junctions.<br></font></font>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <br>
+        </td>
+      </tr>
+
+      <tr>
+        <td align="right" valign="top">
+          <b><font face="arial"><font color=
+                "#25049F"><font size="-1">License
+                </font></font></font></b>
+        </td>
+        <td valign="bottom">
+          <font face="arial"><font size="-1">This program is provided
+          as is. See license.txt from this distribution for legal issues.<br>
+           </font></font>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <br>
+        </td>
+      </tr>
+
+	<tr>
+	  <td align="right" valign="top"><b><font face=
+	  "arial"><font color="#25049F"><font size="-1">
+	  <a name="contact">Contact / Donations</a>
+	  </font></font></font></b></td>
+
+	  <td valign="bottom"><font face="arial" size="-1">
+		 Bug reports, or feature requests send to
+		 <a href="mailto:Hermann.Schinagl@gmx.net">Hermann Schinagl.</a>.<br>
+		 <p>
+
+		 ln.exe is and will be freeware, but if ln.exe was really
+		 helpful for you and saved lots of your time please
+		 think of donations either via PayPal
+
+		 <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+		 <input type="hidden" name="cmd" value="_donations">
+		 <input type="hidden" name="business" value="hermann.schinagl@gmx.net">
+		 <input type="hidden" name="item_name" value="Ln.exe Donation">
+		 <input type="hidden" name="no_shipping" value="0">
+		 <input type="hidden" name="no_note" value="1">
+		 <input type="hidden" name="currency_code" value="EUR">
+		 <input type="hidden" name="tax" value="0">
+		 <input type="hidden" name="lc" value="US">
+		 <input type="hidden" name="bn" value="PP-DonationsBF">
+		 <input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+		 <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+		 </form>
+		 <br><br>
+
+		 or by sending me a gift certificate from<br><br>
+
+		 <a href="http://www.amazon.de/gp/gc/ref=sv_w_0/302-2139848-0001645">
+		  <image src="amazon.de.png"
+		   width="174" height="44" border="0" alt="amazon.de">
+		  </a>.
+
+		  <br></font>
+	   </td>
+	</tr>
+
+      <tr>
+        <td colspan="2" bgcolor="#F2F2F2">
+          <img src="../../images/spacer.gif" width="1" height="5">
+        </td>
+      </tr>
+    <tr>
+      <td align="right" valign="top"><b><font face="arial" color="#25049F" size="-1">
+        <a name="download">Download</a>
+      </font></b></td>
+
+      <td align="center">
+        <table cellspacing="0" cellpadding="0" width="100%"
+               border="0">
+
+          <tr>
+            <td align="left" width="150" valign="top">
+			  <font face="arial" size="-1">
+				<b>
+				Windows 2000<br>
+				Windows XP<br>
+				Windows Server 2003<br>
+				Windows Vista<br>
+				</b>
+              </font>
+            </td>
+
+            <td align="left">
+              <font face="arial" size="-1">
+                Please make sure that the necessary runtime .dlls are installed on your system.
+                This prerequisites package can be downloaded from Microsoft:<br><br>
+
+				<a href="http://www.microsoft.com/downloads/details.aspx?familyid=200B2FD9-AE1A-4A14-984D-389C36F85647&displaylang=en">
+					<center>vcredist_x86.exe for Vs2005 Sp1 (2.6 MB)</center>
+				</a>
+
+				<br>
+				Afterwards install the
+				<br>
+				<a href="http://www.schinagl.priv.at/nt/ln/ln.zip">
+				  <center>ln.zip (26KB)</center>
+				</a>
+				<br>
+
+              </font>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="2">&nbsp</td>
+		  </tr>
+
+          <tr>
+            <td align="left" width="150" valign="top">
+			  <font face="arial" size="-1">
+				<b>
+				Vista64<br>
+				Windows XP64<br>
+				</b>
+              </font>
+            </td>
+
+            <td align="left">
+              <font face="arial" size="-1">
+                Please make sure that the necessary runtime .dlls are installed on your system.
+                This prerequisites package can be downloaded from Microsoft:<br><br>
+
+				<a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=EB4EBE2D-33C0-4A47-9DD4-B9A6D7BD44DA&displaylang=en">
+					<center>vcredist_x64.exe for Vs2005 Sp1 (3.1 MB)</center>
+				</a>
+
+				<br>
+				Afterwards install the
+				<br>
+				<a href="http://www.schinagl.priv.at/nt/ln/ln64.zip">
+				  <center>ln64.zip (31KB)</center>
+				</a>
+				<br>
+
+				<br>
+				<br>
+              </font>
+            </td>
+          </tr>
+
+          <tr>
+            <td align="left" width="150" valign="top">
+			  <font face="arial" size="-1">
+				<b>
+				Windows Itanium<br>
+				</b>
+              </font>
+            </td>
+
+            <td align="left">
+              <font face="arial" size="-1">
+                Please make sure that the necessary runtime .dlls are installed on your system.
+                This prerequisites package can be downloaded from Microsoft:<br><br>
+
+				<a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=747AAD7C-5D6B-4432-8186-85DF93DD51A9&displaylang=en">
+					<center>vcredist_IA64.exe for Vs2005 Sp1 (6.1 mb)</center>
+				</a>
+
+				<br>
+				Afterwards install the
+				<br>
+				<a href="http://www.schinagl.priv.at/nt/ln/lnItanium.zip">
+				  <center>lnItanium.zip (50KB)</center>
+				</a>
+				<br>
+
+              </font>
+            </td>
+          </tr>
+
+        </table>
+    </tr>
+
+
+
+
+    </table>
+  </body>
+</html>

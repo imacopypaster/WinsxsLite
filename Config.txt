@@ -1,0 +1,52 @@
+:CONFIG VERSION=1.80
+
+:ROOT=C:
+:WINDOWS DIR=WINDOWS
+:PROGRAM FILES DIR=Program Files
+
+:PHASE 1 EXCLUDES
+\desktop.ini/
+\system.ini/
+.log/
+.etl/
+.tmp/
+.nt/
+.config/
+\NTUSER.DAT
+\usrclass.dat
+$winsxs$\InstallTemp\
+$winsxs$\ManifestCache\
+$winsxs$\Temp\
+$system32$\config\
+$system32$\SMI\Store\
+$win$\Temp\
+$win$\Debug\
+$win$\Logs\
+$win$\Prefetch\
+$win$\rescache\
+$win$\SchCache\
+$win$\SoftwareDistribution\
+$system32$\catroot2\
+$system32$\FxsTmp\
+$system32$\LogFiles\
+$system32$\Msdtc\KtmRmTm
+$system32$\wbem\Repository\
+$system32$\WDI\
+$system32$\winevt\
+
+:PHASE 2 LANGUAGE PRIORITIES
+en-us=KEEP
+en-gb
+ru-ru=KEEP
+sv-se
+nb-no
+de-de
+
+:RELOCATE FOLDERS=C:\
+$system32$\DriverStore\FileRepository
+$system32$\DriverStore\Temp
+$win$\Installer
+
+:SEARCH FOR SAMPLE MEDIA IN WINSXS=YES
+
+:EOF

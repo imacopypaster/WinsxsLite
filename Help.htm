@@ -1,0 +1,331 @@
+<HTML>
+<HEAD>
+<TITLE>WinsxsLite help</TITLE>
+</HEAD>
+<BODY>
+<B>
+-------------------------Disclaimer/License------------------------------<BR>
+</B>
+<BR>
+Version 1.87 was released August 26, 2011.<BR>
+<BR>
+First a word of warning:<BR>
+WinsxsLite is provided as is, and comes with no warranty.<BR>
+WinsxsLite makes irreversible changes to the entire system partition.<BR>
+The only way to undo these changes, is to restore the system partition<BR>
+from a backup taken before running WinsxsLite.<BR>
+By chosing to use WinsxsLite, you assume full responsibility for any ill<BR>
+effects that might arise from using it.<BR>
+<BR>
+You may use WinsxsLite for free, provided that it's for private use only.<BR>
+<BR>
+You may not use it, or part of it, commercially - that is, using it to<BR>
+support a business in any way - without reaching an agreement with me first.<BR>
+<BR>
+WinsxsLite is Copyright (C) 2009 Christian Bering Boegh<BR>
+<BR>
+<B>
+-------------------------Contact/Donations-------------------------------<BR>
+</B>
+<BR>
+For bug reports, suggestions, requests or comments in general, email me at:<BR>
+<BR>
+ chrisberingb@live.com<BR>
+<BR>
+<B>
+For the latest version, visit:<BR>
+</B>
+<A HREF="http://sites.google.com/site/winsxslite">http://sites.google.com/site/winsxslite</A><BR>
+<BR>
+WinsxsLite is freeware, but if you value it, and want to reward me for my<BR>
+work, you might consider a donation via PayPal:<BR>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="2870530">
+<input type="image" src="https://www.paypal.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="">
+<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+<B>
+-------------------------Overview and phases-----------------------------<BR>
+</B>
+<BR>
+WinsxsLite is meant as a tool to help reduce the size of winsxs in Vista.<BR>
+<BR>
+WinsxsLite is split into two phases.<BR>
+The first phase searches the Program Files and Windows folders for files,<BR>
+that are exactly identical to files in the winsxs folder.<BR>
+<BR>
+The second phase replaces all the old versions of each file in winsxs,<BR>
+with hardlinks to the highest version file.<BR>
+So, it will still seem like there's, say, 16 different versions of a<BR>
+particular file, but in reality, there's only one data object pointed to<BR>
+by 16 directory entries.<BR>
+Additionally, unused localized files can be eliminated, by replacing them<BR>
+with hardlinks to the corresponding files in other languages.<BR>
+<BR>
+Note: Both phases are optional.<BR>
+<BR>
+Note: If Vista SP1 is installed, make sure vsp1cln.exe has been run.<BR>
+<BR>
+<B>
+-------------------------Scan and apply----------------------------------<BR>
+</B>
+<BR>
+Each phase is split in two.<BR>
+The scan generates a ToDo list of files that should be replaced.<BR>
+After that, selecting apply will perform the changes described in the<BR>
+ToDo file.<BR>
+<BR>
+The apply option behaves differently, depending on whether the changes<BR>
+are to be made to an online system partition, or an offline one.<BR>
+Typically, WinsxsLite is asked to modify the current, running system.<BR>
+<BR>
+In that case (online), the apply function changes as much as it can,<BR>
+and schedules the remaining in-use files to be replaced at reboot.<BR>
+It's important that the system is rebooted when requested.<BR>
+So, a typical online-system session would look like this:<BR>
+Phase 1 scan<BR>
+Phase 1 apply<BR>
+Reboot<BR>
+Phase 2 scan<BR>
+Phase 2 apply<BR>
+Reboot<BR>
+<BR>
+It's easier in a multiboot system, where one can boot the second Vista,<BR>
+and then modify the first one.<BR>
+A typical offline-system session would look like this:<BR>
+Phase 1 scan<BR>
+Phase 1 apply<BR>
+Phase 2 scan<BR>
+Phase 2 apply<BR>
+<BR>
+No in-use files means no reboots.<BR>
+<BR>
+Note: Beware of outdated scans!<BR>
+      If the system is modified after a scan, that scan should be considered<BR>
+      outdated, and a rescan should be performed before applying.<BR>
+      Applying an outdated scan may corrupt the system.<BR>
+<BR>
+Note: If apply is operating in online mode, a few hardlinks may linger in<BR>
+      the temporary C:\$ directory (if root=C:), even after a reboot.<BR>
+      this is because a few system files get locked before pending file<BR>
+      operations are performed during reboot.<BR>
+      Running WinsxsLite again will then present the option to reschedule<BR>
+      these files. Rescheduling also "shuffles" the files in each hardlink<BR>
+      group, in an attempt to cure this problem.<BR>
+      Sometimes, rescheduling may even save one from having to do the post-<BR>
+      apply reboot in the first place.<BR>
+<BR>
+      A related problem is the failure to delete a few obsolete hardlinks<BR>
+      in C:\$, even during a reboot. This is because Vista mistakenly thinks<BR>
+      they are locked, when in reality, it's the files they are linking to,<BR>
+      that are locked. The only way to get rid of these hardlinks, is to put<BR>
+      the partition offline and delete them manually.<BR>
+<BR>
+Note: Some functions, like the apply function, works under Windows XP.<BR>
+<BR>
+<B>
+-------------------------Relocate folders--------------------------------<BR>
+</B>
+<BR>
+This, the 3rd phase, takes care of data that is never used,<BR>
+or almost never used.<BR>
+<BR>
+There's no reason to keep more than a gigabyte of drivers on the system<BR>
+drive - particularly if it's a high performance SSD.<BR>
+The same goes for install packages left by certain software.<BR>
+Those will only be used again, if the software is ever uninstalled.<BR>
+<BR>
+See below for config options.<BR>
+<BR>
+<B>
+-------------------------Auto start--------------------------------------<BR>
+</B>
+<BR>
+This function schedules WinsxsLite to run automatically on the next reboot.<BR>
+<BR>
+It's very useful, because it runs before everything else, including logon.<BR>
+This means fewer files are locked, thus fewer 'access denied' issues.<BR>
+<BR>
+The folder relocate function will activate auto start if errors occurred<BR>
+during copies, and the user chose 'Complete on reboot'.<BR>
+<BR>
+<B>
+-------------------------Configuration-----------------------------------<BR>
+</B>
+<BR>
+The first time WinsxsLite is run, it creates an example configuration file.<BR>
+Close WinsxsLite, and review Config.txt to make sure it fits your needs.<BR>
+<BR>
+Note: Config.txt is only parsed once - during program startup.<BR>
+      So, restart WinsxsLite for changes in Config.txt to take effect.<BR>
+<BR>
+<B>
+The first section of the default Config.txt starts like this:<BR>
+</B>
+<BR>
+:PHASE 1 EXCLUDES<BR>
+\desktop.ini/<BR>
+\system.ini/<BR>
+.log/<BR>
+.etl/<BR>
+.tmp/<BR>
+.nt/<BR>
+.config/<BR>
+\NTUSER.DAT<BR>
+\usrclass.dat<BR>
+$winsxs$\InstallTemp\<BR>
+$winsxs$\ManifestCache\<BR>
+<BR>
+ (...)<BR>
+<BR>
+This tells phase 1 that certain files shouldn't be considered for replacement.<BR>
+The strings are matched against full paths, so specifying:<BR>
+\System32\DriverStore\<BR>
+- would exclude all files in that directory.<BR>
+The optional forward slash, that can be put at the end of a line, means<BR>
+only-match-against-end-of-full-path.<BR>
+$root$, $win$, $winsxs$ and $system32$ expands to the the various windows<BR>
+folder paths (like C: , C:\Windows and so on).<BR>
+<BR>
+Note: $Phase1Extensions.txt is generated as additional help to see what's<BR>
+      going on. It contains almost the same information as ToDo1.txt,<BR>
+      but sorted according to extensions.<BR>
+<BR>
+Note: Setting ':PROGRAM FILES DIR=' causes program files to be omitted<BR>
+      during phase 1.<BR>
+<BR>
+<B>
+The second section looks like this:<BR>
+</B>
+<BR>
+:PHASE 2 LANGUAGE PRIORITIES<BR>
+en-us=KEEP<BR>
+en-gb<BR>
+da-dk=KEEP<BR>
+sv-se<BR>
+nb-no<BR>
+de-de<BR>
+<BR>
+This example defines six prioritized base languages - English-US,English-GB,<BR>
+Danish,Swedish,Bokmaal-Norwegian and German.<BR>
+English-US and Danish are marked as languages to KEEP.<BR>
+Thus, after running phase 2, all localized files, except Danish, will have<BR>
+been replaced with hardlinks to English-US.<BR>
+<BR>
+Why not just:<BR>
+<BR>
+:PHASE 2 LANGUAGE PRIORITIES<BR>
+en-us=KEEP<BR>
+da-dk=KEEP<BR>
+<BR>
+Under most circumstances, this would yield exactly the same results, except if<BR>
+English-US and Danish versions of some files are absent. In that case, it<BR>
+matters which language is down next on the list.<BR>
+<BR>
+Leaving this section empty - that is, not defining any base languages,<BR>
+will obviously cause all languages to be left alone during phase 2.<BR>
+<BR>
+Note: After a phase 2 scan, the help file $LanguageStrings.txt contains all<BR>
+      the different language strings found in winsxs during the scan.<BR>
+      The second part of a language string denotes the country.<BR>
+      A list of two-character country codes can be found here:<BR>
+<A HREF="http://www.theodora.com/country_digraphs.html">http://www.theodora.com/country_digraphs.html</A><BR>
+      - and language codes:<BR>
+<A HREF="http://msdn.microsoft.com/en-us/library/ms533052(VS.85).aspx">http://msdn.microsoft.com/en-us/library/ms533052(VS.85).aspx</A><BR>
+<BR>
+<B>
+The last section:<BR>
+</B>
+<BR>
+:RELOCATE FOLDERS=D:\<BR>
+$system32$\DriverStore\FileRepository<BR>
+$system32$\DriverStore\Temp<BR>
+$win$\Installer<BR>
+<BR>
+These defaults define the folder relocate target path to be the D: drive.<BR>
+It then specifies the folders to be moved.<BR>
+Note that the $system32$\DriverStore\en-US folder is omitted on purpose.<BR>
+It only contains hardlinks, that would turn into objects, if moved to D:<BR>
+<BR>
+Generally, avoid 'breaking' hardlinks, since the only result is wasted space<BR>
+on the target drive. After running phase 1 and 2 on a fresh Vista install,<BR>
+the \Program Files folder takes up around 10MB. Relocate it, and the<BR>
+broken hardlinks makes it balloon to 500MB.<BR>
+Of course, some software can't be prevented from installing a lot of data in<BR>
+\Program Files. If this becomes a problem, then just relocate that particular<BR>
+software.<BR>
+<BR>
+Be careful - WinsxsLite will try to relocate anything you ask it to.<BR>
+<BR>
+<B>
+-------------------------Winsxs size-------------------------------------<BR>
+</B>
+<BR>
+This function reports the true size of the winsxs folder.<BR>
+<BR>
+Explorer doesn't do this. If one puts a single 1MB object with 10 directory<BR>
+entries in the same folder, Explorer will report 10MB.<BR>
+That 1MB should be the correct answer, is obvious.<BR>
+But what if the 10 entries are scattered all over the directory tree ?<BR>
+Where is that 1MB truly located ?<BR>
+<BR>
+That's why two numbers are calculated:<BR>
+<BR>
+The "unique" number, is the size of all objects that only have directory<BR>
+entries in winsxs.<BR>
+If one deleted the winsxs folder, this would be the number of bytes freed.<BR>
+<BR>
+The "shared" number, is the size of all objects that have entries in both<BR>
+winsxs and in directories outside winsxs.<BR>
+Thus, deleting winsxs won't free any of these bytes, since the objects are<BR>
+still referenced from elsewhere. A filesystem object is only deallocated when<BR>
+its reference count reaches zero.<BR>
+<BR>
+Adding these two numbers together, one gets the total amount of bytes<BR>
+referenced from within winsxs.<BR>
+This isn't the number Explorer reports, because some objects are referenced<BR>
+more than once from within winsxs - and Explorer counts each reference.<BR>
+<BR>
+The results for the main subdirectories in winsxs are listed as well, and put<BR>
+in the log too.<BR>
+<BR>
+The bad news, is that this operation takes about 10 minutes to complete.<BR>
+<BR>
+<B>
+-------------------------3rd party software------------------------------<BR>
+</B>
+<BR>
+WinsxsLite makes use of certain pieces of third party software:<BR>
+<BR>
+SubInACL v5.2.3790.1180<BR>
+From Microsoft<BR>
+<A HREF="http://www.microsoft.com/downloads/details.aspx?FamilyID=E8BA3E56-D8FE-4A91-93CF-ED6985E3927B&displaylang=en">http://www.microsoft.com/downloads/details.aspx?FamilyID=E8BA3E56-D8FE-4A91-93CF-ED6985E3927B&displaylang=en</A><BR>
+Make sure SubInAcl.exe is put where WinsxsLite can find it.<BR>
+<BR>
+PendMoves v1.1 and MoveFile v1.0<BR>
+By Mark Russinovich<BR>
+<A HREF="http://technet.microsoft.com/en-us/sysinternals/bb897556.aspx">http://technet.microsoft.com/en-us/sysinternals/bb897556.aspx</A><BR>
+<BR>
+Ln v2.6.5.0 - Command Line Hardlinks<BR>
+By Hermann Schinagl<BR>
+<A HREF="http://schinagl.priv.at/nt/ln/ln.html#contact">http://schinagl.priv.at/nt/ln/ln.html#contact</A><BR>
+Note: Likely, the runtimes installed by vcredist are already on your system.<BR>
+<BR>
+Fcmp v1.6 - ATTENTION, DO NOT USE THE BUGGY V1.7!!!<BR>
+By Greg Wittmeyer<BR>
+<A HREF="http://gammadyne.com/cmdline.htm#fcmp">http://gammadyne.com/cmdline.htm#fcmp</A><BR>
+<BR>
+MD5File<BR>
+By Robin Keir<BR>
+<A HREF="http://keir.net/md5file.html">http://keir.net/md5file.html</A><BR>
+<BR>
+StringConverter v1.2<BR>
+By Guillaume Bordier<BR>
+<A HREF="http://www.gbordier.com/gbtools/stringconverter.htm">http://www.gbordier.com/gbtools/stringconverter.htm</A><BR>
+<BR>
+<B>
+-------------------------------------------------------------------------<BR>
+</B>
+</BODY>
+</HTML>
